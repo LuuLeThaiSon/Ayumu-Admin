@@ -31,7 +31,7 @@ public class AuthController {
 		return ResponseEntity.ok(userService.register(requestBody));
 	}
 
-	@PostMapping("/login")
+	@GetMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRegisterRequest requestBody) throws Exception {
 
 		authenticate(requestBody.getUsername(), requestBody.getPassword());
