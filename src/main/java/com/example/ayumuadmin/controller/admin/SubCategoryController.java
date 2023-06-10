@@ -1,6 +1,7 @@
 package com.example.ayumuadmin.controller.admin;
 
 import com.example.ayumuadmin.exception.AyumuException;
+import com.example.ayumuadmin.model.FindSubCategoryByCategoryIdRequest;
 import com.example.ayumuadmin.model.request.ChangeSubCategoryStatusRequest;
 import com.example.ayumuadmin.model.request.CreateSubCategoryRequest;
 import com.example.ayumuadmin.model.request.UpdateSubCategoryRequest;
@@ -30,4 +31,9 @@ public class SubCategoryController {
 	public ResponseEntity<?> changeSubCategoryStatus(@RequestBody ChangeSubCategoryStatusRequest request) throws AyumuException {
         return ResponseEntity.ok(subCategoryService.changeSubCategoryStatus(request));
     }
+
+	@PostMapping("/find-by-category-id")
+	public ResponseEntity<?> findSubCategoryByCategoryId(@RequestBody FindSubCategoryByCategoryIdRequest request) throws AyumuException {
+		return ResponseEntity.ok(subCategoryService.findSubCategoryByCategoryId(request));
+	}
 }

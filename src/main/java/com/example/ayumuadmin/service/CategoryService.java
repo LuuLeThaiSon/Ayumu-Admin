@@ -1,8 +1,8 @@
 package com.example.ayumuadmin.service;
 
 import com.example.ayumuadmin.exception.AyumuException;
-import com.example.ayumuadmin.model.response.CategoriesResponse;
+import com.example.ayumuadmin.model.response.CategoryResponse;
 
 public interface CategoryService {
-	CategoriesResponse listCategories() throws AyumuException;
+	CategoryResponse listCategories() throws AyumuException;
 }

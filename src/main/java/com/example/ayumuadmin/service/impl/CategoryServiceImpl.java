@@ -3,7 +3,7 @@ package com.example.ayumuadmin.service.impl;
 import com.example.ayumuadmin.entity.CategoryEntity;
 import com.example.ayumuadmin.exception.AyumuException;
 import com.example.ayumuadmin.model.Category;
-import com.example.ayumuadmin.model.response.CategoriesResponse;
+import com.example.ayumuadmin.model.response.CategoryResponse;
 import com.example.ayumuadmin.repository.CategoryRepository;
 import com.example.ayumuadmin.service.CategoryService;
 import com.example.ayumuadmin.utils.AyumuErrorCode;
@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private final CategoryRepository categoryRepository;
 
 	@Override
-	public CategoriesResponse listCategories() throws AyumuException {
+	public CategoryResponse listCategories() throws AyumuException {
 		try {
 			List<CategoryEntity> categoryEntities = categoryRepository.findAll();
 
@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 				.map(e -> new Category(e.getId(), e.getName()))
 				.collect(Collectors.toList());
 
-			return new CategoriesResponse(categories);
+			return new CategoryResponse(categories);
 
 		} catch (Exception e) {
 			log.error("listCategories error {}", getClass().getSimpleName(), e);

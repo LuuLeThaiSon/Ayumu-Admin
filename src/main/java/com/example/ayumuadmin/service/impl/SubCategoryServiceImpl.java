@@ -3,10 +3,13 @@ package com.example.ayumuadmin.service.impl;
 import com.example.ayumuadmin.entity.CategoryEntity;
 import com.example.ayumuadmin.entity.SubCategoryEntity;
 import com.example.ayumuadmin.exception.AyumuException;
+import com.example.ayumuadmin.model.FindSubCategoryByCategoryIdRequest;
+import com.example.ayumuadmin.model.SubCategory;
 import com.example.ayumuadmin.model.request.ChangeSubCategoryStatusRequest;
 import com.example.ayumuadmin.model.request.CreateSubCategoryRequest;
 import com.example.ayumuadmin.model.request.UpdateSubCategoryRequest;
 import com.example.ayumuadmin.model.response.StatusResponse;
+import com.example.ayumuadmin.model.response.SubCategoryResponse;
 import com.example.ayumuadmin.repository.CategoryRepository;
 import com.example.ayumuadmin.repository.SubCategoryRepository;
 import com.example.ayumuadmin.service.SubCategoryService;
@@ -14,9 +17,12 @@ import com.example.ayumuadmin.utils.AyumuErrorCode;
 import com.example.ayumuadmin.utils.Common;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +49,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			} else {
 				return new StatusResponse(Common.STATUS_FAILED);
 			}
-
 		} catch (Exception e) {
 			log.error("createSubCategory error {}", getClass().getSimpleName(), e);
 			throw new AyumuException(AyumuErrorCode.BAD_REQUEST, "BAD_REQUEST");
@@ -56,7 +61,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			log.info("{} updateSubCategory request {}", getClass().getSimpleName(), request);
 			Optional<SubCategoryEntity> subCategoryEntity = subCategoryRepository.findById(request.getId());
 
-			if (subCategoryEntity.isPresent()) {
+			if (!subCategoryEntity.isPresent()) {
+				return new StatusResponse(Common.DATA_NOT_FOUND);
+			}
+
+			if (!StringUtils.equals(subCategoryEntity.get().getName(), request.getName())
+				&& !subCategoryRepository.existsByName(request.getName())) {
 				subCategoryEntity.get().setName(request.getName());
 
 				subCategoryRepository.save(subCategoryEntity.get());
@@ -65,7 +75,6 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 			} else {
 				return new StatusResponse(Common.STATUS_FAILED);
 			}
-
 		} catch (Exception e) {
 			log.error("updateSubCategory error {}", getClass().getSimpleName(), e);
 			throw new AyumuException(AyumuErrorCode.BAD_REQUEST, "BAD_REQUEST");
@@ -87,6 +96,24 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 				return new StatusResponse(Common.STATUS_FAILED);
 			}
 		} catch (Exception e) {
+			throw new AyumuException(AyumuErrorCode.BAD_REQUEST, "BAD_REQUEST");
+		}
+	}
+
+	@Override
+	public SubCategoryResponse findSubCategoryByCategoryId(FindSubCategoryByCategoryIdRequest request) throws AyumuException {
+		try {
+			log.info("{} findSubCategoryByCategoryId request: {}", getClass().getSimpleName(), request);
+			List<SubCategoryEntity> subCategoryEntities = subCategoryRepository.findAllByCategoryId(request.getCategoryId());
+
+			List<SubCategory> subCategories = subCategoryEntities
+				.stream()
+				.map(e -> new SubCategory(e.getId(), e.getCategoryId(), e.getName(), e.getStatus()))
+				.collect(Collectors.toList());
+
+			return new SubCategoryResponse(subCategories);
+		} catch (Exception e) {
+			log.error("findSubCategoryByCategoryBy error {}", getClass().getSimpleName(), e);
 			throw new AyumuException(AyumuErrorCode.BAD_REQUEST, "BAD_REQUEST");
 		}
 	}
