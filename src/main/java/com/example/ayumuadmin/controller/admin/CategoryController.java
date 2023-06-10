@@ -18,7 +18,7 @@ public class CategoryController {
 
 	@PostMapping("/list")
 	public ResponseEntity<?> listCategories() throws AyumuException {
-        return ResponseEntity.ok(categoryService.listCategories());
-    }
+		return ResponseEntity.ok(categoryService.listCategories());
+	}
 }
 

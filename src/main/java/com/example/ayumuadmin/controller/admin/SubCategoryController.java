@@ -24,13 +24,13 @@ public class SubCategoryController {
 
 	@PostMapping("/update")
 	public ResponseEntity<?> updateSubCategory(@RequestBody UpdateSubCategoryRequest request) throws AyumuException {
-        return ResponseEntity.ok(subCategoryService.updateSubCategory(request));
-    }
+		return ResponseEntity.ok(subCategoryService.updateSubCategory(request));
+	}
 
 	@PostMapping("/change-status")
 	public ResponseEntity<?> changeSubCategoryStatus(@RequestBody ChangeSubCategoryStatusRequest request) throws AyumuException {
-        return ResponseEntity.ok(subCategoryService.changeSubCategoryStatus(request));
-    }
+		return ResponseEntity.ok(subCategoryService.changeSubCategoryStatus(request));
+	}
 
 	@PostMapping("/find-by-category-id")
 	public ResponseEntity<?> findSubCategoryByCategoryId(@RequestBody FindSubCategoryByCategoryIdRequest request) throws AyumuException {
