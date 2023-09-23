@@ -6,6 +6,5 @@ public interface Common {
 	String STATUS_FAILED = "FAILED";
 	String STATUS_ACTIVE = "ACTIVE";
 	String STATUS_INACTIVE = "INACTIVE";
-
 	String DATA_NOT_FOUND = "DATA_NOT_FOUND";
 }
